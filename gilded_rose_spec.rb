@@ -95,8 +95,14 @@ describe GildedRose do
     end
   end
 
-  # it "Sell ins do not decrease by more than 1" do
-    
-  # end
+  it "Sell ins do not decrease by more than 1 for every single item except \"Sulfuras\"" do 
+    subject.items.each do |i|
+      if i.name != "Sulfuras, Hand of Ragnaros"
+        get_the_sellby_first = i.sell_in
+        subject.update_quality
+        expect(i.sell_in).to eq(get_the_sellby_first-1)
+      end
+    end
+  end
 
 end
