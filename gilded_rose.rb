@@ -15,13 +15,23 @@ class GildedRose
     @items << Item.new("Conjured Mana Cake", 3, 6)
   end
 
+  def update_normal_quality(item_index)
+    @items[item_index].sell_in -= 1
+
+    if  @items[item_index].quality > 0
+      @items[item_index].quality -= 1
+      if @items[item_index].sell_in < 0 && @items[item_index].quality > 0
+        @items[item_index].quality -= 1
+    end
+  end
+
   def update_quality
 
     for i in 0..(@items.size-1)
       if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
         if (@items[i].quality > 0)
           if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-            @items[i].quality = @items[i].quality - 1
+            update_normal_quality(i)
           end
         end
       else
