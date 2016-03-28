@@ -62,33 +62,41 @@ describe GildedRose do
     end
   end
 
-  # it "\"Backstage passes\", like aged brie, increases in Quality as it's SellIn value approaches; Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but Quality drops to 0 after the concert" do
-  #   backstage_item = subject.items.select { |i| i.name.start_with? "Backstage" }.first
-  #   prev = backstage_item.quality
-  #   subject.update_quality
-  #   increases_by_1 = backstage_item.quality == prev + 1
+  it "\"Backstage passes\", like aged brie, increases in Quality as it's SellIn value approaches; Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but Quality drops to 0 after the concert" do
+    backstage_item = subject.items.select { |i| i.name.start_with? "Backstage" }.first
+    prev = backstage_item.quality
+    subject.update_quality
+    increases_by_1 = backstage_item.quality == prev + 1
 
-  #   4.times { subject.update_quality }
-  #   prev = backstage_item.quality
-  #   subject.update_quality
-  #   increases_by_2 = prev + 2
+    4.times { subject.update_quality }
+    prev_2 = backstage_item.quality
+    subject.update_quality
+    increases_by_2 = backstage_item.quality
 
-  #   5.times { subject.update_quality }
-  #   prev = backstage_item.quality
-  #   subject.update_quality
-  #   increases_by_3 = prev + 3
+    5.times { subject.update_quality }
+    prev = backstage_item.quality
+    subject.update_quality
+    increases_by_3 = backstage_item.quality == prev + 3
 
-  #   goes_to_zero = backstage_item.quality == 0
+    goes_to_zero = backstage_item.quality == 0
 
-  #   expect([increases_by_1, increases_by_2, increases_by_3, goes_to_zero].all? ).to be
+    expect([increases_by_1].all? ).to be true
+    expect([increases_by_2].all? ).to be prev_2+2
+    expect([increases_by_3].all? ).to be true
+    expect([goes_to_zero].all? ).to be true
+  end
+
+  it "\"Conjured\" items degrade in Quality twice as fast as normal items" do
+    conjured_items = subject.items.select { |i| i.name.start_with? "Conjured" }
+    conjured_items.each do |i|    
+    prev_qual = i.quality
+    subject.update_quality
+    expect(i.quality).to eq(prev_qual-2)
+    end
+  end
+
+  # it "Sell ins do not decrease by more than 1" do
+    
   # end
-
-  # it "\"Conjured\" items degrade in Quality twice as fast as normal items" do
-  #   conjured_items = subject.items.select { |i| i.name.start_with? "Conjured" }
-  #   conjured_items.each do |i|    
-      
-  #   end
-  # end
-
 
 end
