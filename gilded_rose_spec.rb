@@ -17,4 +17,9 @@ describe GildedRose do
     end
   end
 
+  it "The Quality of an item is never negative" do
+    subject.update_quality
+    expect(subject.items.any? { |i| i.quality < 0 }).to eq(false)
+  end
+
 end
