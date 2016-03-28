@@ -32,4 +32,16 @@ describe GildedRose do
     end    
   end
 
+  it "The Quality of an item is never more than 50" do
+    50.times do
+      subject.update_quality
+    end
+    
+    subject.items.each do |i|
+      unless i.name == "Sulfuras, Hand of Ragnaros"
+        expect(i.quality).to be <= 50
+      end
+    end    
+  end
+
 end
