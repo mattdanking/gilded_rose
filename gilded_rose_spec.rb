@@ -22,4 +22,14 @@ describe GildedRose do
     expect(subject.items.any? { |i| i.quality < 0 }).to eq(false)
   end
 
+  it "\"Aged Brie\" actually increases in Quality the older it gets" do
+    subject.items.each do |i|
+      if i.name == "Aged Brie"
+        aged_brie = i.quality
+        subject.update_quality
+        expect(i.quality).to be > aged_brie
+      end
+    end    
+  end
+
 end
