@@ -1,6 +1,7 @@
 require './item.rb'
 
 class GildedRose
+  attr_accessor :items # so we have access to items outside of GildedRose
 
   @items = []
 
