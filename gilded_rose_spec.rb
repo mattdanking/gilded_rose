@@ -7,7 +7,7 @@ describe GildedRose do
     subject.update_quality
   end
 
-  it "\"Sulfuras\", being a legendary item, never has to be sold or decreases in Quality" do
+  it "\"Sulfuras\", being a legendary item, never has to be sold or decreases in Quality" do 
     subject.items.each do |i|
       if i.name == "Sulfuras, Hand of Ragnaros"
         sulfuras = i.quality
@@ -17,9 +17,9 @@ describe GildedRose do
     end
   end
 
-  it "The Quality of an item is never negative" do
+  it "The Quality of an item is never negative" do 
     subject.update_quality
-    expect(subject.items.any? { |i| i.quality < 0 }).to eq(false)
+    expect(subject.items.any? {|i| i.quality < 0}).to eq(false)
   end
 
   it "\"Aged Brie\" actually increases in Quality the older it gets" do
@@ -29,11 +29,11 @@ describe GildedRose do
         subject.update_quality
         expect(i.quality).to be > aged_brie
       end
-    end    
+    end
   end
 
   it "The Quality of an item is never more than 50" do
-    50.times do
+    50.times do 
       subject.update_quality
     end
 
@@ -41,23 +41,20 @@ describe GildedRose do
       unless i.name == "Sulfuras, Hand of Ragnaros"
         expect(i.quality).to be <= 50
       end
-    end    
+    end
   end
 
   it "Once the sell by date has passed, Quality degrades twice as fast" do
-    # sulfuras never decreases or increases
-    # aged brie increases
-    # backstage passes increases until sell_in is 0, then drops to 0
-    testable_items = subject.items.reject do |i|
-     ["Sulfuras", "Backstage", "Aged"].any? { |name| i.name.start_with? name }
-   end
+    testable_items = subject.items.reject do |i| 
+      ["Sulfuras", "Backstage", "Aged"].any? { |name| i.name.start_with? name }
+    end
     11.times { subject.update_quality }
     testable_items.each do |i|
       if i.sell_in < 0
-        quality_before = i.quality
+        q_before_update = i.quality
         subject.update_quality
-        quality_after = quality_before-2 >= 0 ? quality_before-2 : 0
-        expect(i.quality).to be quality_after
+        q_after_update = q_before_update-2 >= 0 ? q_before_update-2 : 0
+        expect(i.quality).to be q_after_update
       end
     end
   end
@@ -78,20 +75,23 @@ describe GildedRose do
     subject.update_quality
     increases_by_3 = backstage_item.quality == prev + 3
 
+    5.times { subject.update_quality }
+    prev = backstage_item.quality
+    subject.update_quality
     goes_to_zero = backstage_item.quality == 0
 
-    expect([increases_by_1].all? ).to be true
-    expect([increases_by_2].all? ).to be prev_2+2
-    expect([increases_by_3].all? ).to be true
-    expect([goes_to_zero].all? ).to be true
+    expect(increases_by_1).to be true
+    expect(increases_by_2).to be prev_2+2
+    expect(increases_by_3).to be true
+    expect(goes_to_zero).to be true
   end
 
   it "\"Conjured\" items degrade in Quality twice as fast as normal items" do
-    conjured_items = subject.items.select { |i| i.name.start_with? "Conjured" }
-    conjured_items.each do |i|    
-    prev_qual = i.quality
-    subject.update_quality
-    expect(i.quality).to eq(prev_qual-2)
+    conjured_items = subject.items.select { |i| i.name.start_with? "Conjured"}
+    conjured_items.each do |i|
+      prev_qual = i.quality
+      subject.update_quality
+      expect(i.quality).to eq(prev_qual-2)
     end
   end
 

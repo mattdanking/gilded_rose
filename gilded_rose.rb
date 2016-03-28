@@ -61,7 +61,6 @@ class GildedRose
   end
 
   def update_quality
-
     for i in 0..(@items.size-1)
       case @items[i].name
       when "Aged Brie"
@@ -74,42 +73,6 @@ class GildedRose
         update_conjured(i)
       else
         update_normal_item(i)
-      end
-
-
-      if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-        if (@items[i].quality > 0)
-          if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-            update_normal_item(i)
-          end
-        end
-      else
-        if (@items[i].quality < 50)
-          @items[i].quality = @items[i].quality + 1
-          if (@items[i].name == "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].sell_in < 11)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-            if (@items[i].sell_in < 6)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-          end
-        end
-      end
-      if (@items[i].sell_in < 0)
-        if (@items[i].name != "Aged Brie")
-          if (@items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-            "lool"
-          else
-            @items[i].quality = @items[i].quality - @items[i].quality
-          end
-        else
-          update_aged_brie(i)
-        end
       end
     end
   end
